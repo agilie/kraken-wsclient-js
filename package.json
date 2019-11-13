@@ -1,0 +1,46 @@
+{
+  "name": "kraken-wsclient",
+  "version": "1.0.0",
+  "description": "websockets API wrapper for the Kraken [websocket API](https://docs.kraken.com/websockets/).",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsc -w",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/agilie/kraken-wsclient-js.git"
+  },
+  "keywords": [
+    "ws",
+    "kraken",
+    "api",
+    "client"
+  ],
+  "author": "Agilie",
+  "contributors": [
+    {
+      "name": "Prochor Simon",
+      "email": "prokhor.zimon@agilie.com"
+    }
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/agilie/kraken-wsclient-js/issues"
+  },
+  "homepage": "https://github.com/agilie/kraken-wsclient-js#readme",
+  "files": [
+    "README.md",
+    "index.ts"
+  ],
+  "devDependencies": {
+    "prettier": "^1.19.1",
+    "tslint": "^5.20.1",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^3.7.2"
+  },
+  "dependencies": {
+    "@types/ws": "^6.0.3",
+    "ws": "^7.2.0"
+  }
+}
