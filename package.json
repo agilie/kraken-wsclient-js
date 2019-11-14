@@ -2,7 +2,6 @@
   "name": "kraken-wsclient",
   "version": "1.0.0",
   "description": "websockets API wrapper for the Kraken [websocket API](https://docs.kraken.com/websockets/).",
-  "main": "index.js",
   "scripts": {
     "dev": "tsc -w",
     "build": "tsc"
@@ -33,13 +32,16 @@
     "README.md",
     "dist/"
   ],
-  "devDependencies": {
+  "main": "disr/index.js",
+  "dependencies": {
     "@types/ws": "^6.0.3",
     "isomorphic-ws": "^4.0.1",
+    "ws": "^7.2.0"
+  },
+  "devDependencies": {
     "prettier": "^1.19.1",
     "tslint": "^5.20.1",
     "tslint-config-prettier": "^1.18.0",
-    "typescript": "^3.7.2",
-    "ws": "^7.2.0"
+    "typescript": "^3.7.2"
   }
 }
