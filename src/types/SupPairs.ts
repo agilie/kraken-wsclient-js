@@ -1,24 +1,4 @@
-export interface SubscribeForPriceEvent {
-    event: string;
-    pair: string[];
-    subscription: {
-        name: string;
-    };
-}
-
-export enum CoinType {
-    ETH = 'eth',
-    BTC = 'btc',
-    LTC = 'ltc',
-    DASH = 'dash',
-    ZEC = 'zec',
-}
-
-export type CoinMap<T> = {
-    [x in CoinType]: T;
-};
-
-export enum supportedPairs {
+export enum SupPairs {
     ADA_CAD = 'ADA/CAD',
     ADA_ETH = 'ADA/ETH',
     ADA_EUR = 'ADA/EUR',

@@ -31,7 +31,7 @@
   "homepage": "https://github.com/agilie/kraken-wsclient-js#readme",
   "files": [
     "README.md",
-    "index.ts"
+    "src/index.ts"
   ],
   "devDependencies": {
     "prettier": "^1.19.1",

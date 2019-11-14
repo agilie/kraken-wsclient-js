@@ -1,7 +1,5 @@
-import Kraken, { CoinType, supportedPairs } from '../dist/index';
+import { getPrices, SupPairs } from '../src/index';
 
-const kra = new Kraken();
-
-kra.get(supportedPairs.ETH_USD, supportedPairs.ETH_USD).then(data => {
+getPrices(SupPairs.ETH_USD, SupPairs.LTC_USD).then(data => {
     console.log('[data]', data);
 });
