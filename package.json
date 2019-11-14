@@ -32,7 +32,7 @@
     "README.md",
     "dist/"
   ],
-  "main": "disr/index.js",
+  "main": "./dist/index.js",
   "dependencies": {
     "@types/ws": "^6.0.3",
     "isomorphic-ws": "^4.0.1",
