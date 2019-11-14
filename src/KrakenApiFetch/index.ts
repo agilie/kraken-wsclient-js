@@ -1,4 +1,5 @@
-import WebSocket, { CloseEvent, ErrorEvent, MessageEvent } from 'ws';
+import { CloseEvent, ErrorEvent, MessageEvent } from 'ws';
+import WebSocket from 'isomorphic-ws';
 import { SubscribeForPriceEvent } from '../types/SubscribeForPriceEvent';
 import { SupPairs } from '../types/SupPairs';
 
