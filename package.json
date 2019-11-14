@@ -30,7 +30,7 @@
   "homepage": "https://github.com/agilie/kraken-wsclient-js#readme",
   "files": [
     "README.md",
-    "dist/"
+    "dist/**/*"
   ],
   "main": "./dist/index.js",
   "dependencies": {
