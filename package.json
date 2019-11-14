@@ -31,17 +31,16 @@
   "homepage": "https://github.com/agilie/kraken-wsclient-js#readme",
   "files": [
     "README.md",
-    "src/index.ts"
+    "src/**/*"
   ],
   "devDependencies": {
     "prettier": "^1.19.1",
     "tslint": "^5.20.1",
     "tslint-config-prettier": "^1.18.0",
-    "typescript": "^3.7.2",
-    "@types/ws": "^6.0.3",
-    "ws": "^7.2.0"
+    "typescript": "^3.7.2"
   },
   "dependencies": {
-
+    "@types/ws": "^6.0.3",
+    "ws": "^7.2.0"
   }
 }
