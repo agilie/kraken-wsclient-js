@@ -1,5 +1,5 @@
 import { SupPairs } from '../types/SupPairs';
-export default class KrakenApiFetch {
+export default class KrakenWs {
     private KRAKEN_SOCKET_URL;
     private readonly _socket;
     private readonly _expectedPairs;
