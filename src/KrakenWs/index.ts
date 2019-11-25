@@ -13,7 +13,7 @@ export default class KrakenWs {
 
     private _getPrices: { [key in SupPairs]?: string } = {};
 
-    constructor(...pairs: SupPairs[]) {
+    constructor(pairs: SupPairs[]) {
         this._expectedPairs = pairs;
         this._socket = new this.ws(this.KRAKEN_SOCKET_URL);
     }

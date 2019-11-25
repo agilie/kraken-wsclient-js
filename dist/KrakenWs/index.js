@@ -1,19 +1,11 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-var isomorphic_ws_1 = __importDefault(require("isomorphic-ws"));
 var KrakenWs = /** @class */ (function () {
-    function KrakenWs() {
-        var pairs = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            pairs[_i] = arguments[_i];
-        }
+    function KrakenWs(pairs) {
         this.KRAKEN_SOCKET_URL = 'wss://ws.kraken.com';
         this._getPrices = {};
         this._expectedPairs = pairs;
-        this._socket = new isomorphic_ws_1.default(this.KRAKEN_SOCKET_URL);
+        this._socket = new this.ws(this.KRAKEN_SOCKET_URL);
     }
     KrakenWs.prototype.fetch = function () {
         var _this = this;

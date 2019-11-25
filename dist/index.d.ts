@@ -1,3 +1,4 @@
+import KrakenWs from './KrakenWs';
 import { SupPairs } from './types/SupPairs';
 import {
     ParamsAssets,
@@ -10,6 +11,7 @@ import {
 } from './types/PublicParams';
 export * from './types/SubscribeForPriceEvent';
 export * from './types/SupPairs';
+export { KrakenWs };
 export declare function getPrices(...prices: SupPairs[]): Promise<any>;
 export declare function getTime(): Promise<any>;
 export declare function getAssets(params?: ParamsAssets): Promise<any>;

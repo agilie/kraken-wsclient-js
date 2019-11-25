@@ -21,7 +21,7 @@ const client = new KrakenClient();
 export { KrakenWs };
 
 export function getPrices(...prices: SupPairs[]): Promise<any> {
-    const Kraken = new KrakenWs(...prices);
+    const Kraken = new KrakenWs(prices);
     return Kraken.fetch();
 }
 
