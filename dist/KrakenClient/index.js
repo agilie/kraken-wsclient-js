@@ -40,7 +40,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var got_1 = __importDefault(require("got"));
-var qs_1 = __importDefault(require("qs"));
 var Methods_1 = require("../types/Methods");
 var KrakenClient = /** @class */ (function () {
     function KrakenClient() {
@@ -78,14 +77,14 @@ var KrakenClient = /** @class */ (function () {
                         headers['User-Agent'] = 'Kraken Javascript API Client';
                         options = {
                             method: 'POST',
-                            body: qs_1.default.stringify(data),
-                            headers: headers,
+                            body: data,
+                            json: true,
                             timeout: this.timeout,
                         };
                         return [4 /*yield*/, got_1.default(url, options)];
                     case 1:
                         response = _a.sent();
-                        body = JSON.parse(response.body);
+                        body = response.body;
                         if (body.error && body.error.length) {
                             error = body.error.filter(function (e) { return e.startsWith('E'); }).map(function (e) { return e.substr(1); });
                             if (!error.length) {

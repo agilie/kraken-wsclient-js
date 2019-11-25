@@ -1,5 +1,4 @@
-import got from 'got';
-import qs from 'qs';
+import got, { GotJSONOptions } from 'got';
 
 import { Public, Private } from '../types/Methods';
 
@@ -32,15 +31,15 @@ export default class KrakenClient {
         // Set custom User-Agent string
         headers['User-Agent'] = 'Kraken Javascript API Client';
 
-        const options = {
+        const options: GotJSONOptions = {
             method: 'POST',
-            body: qs.stringify(data),
-            headers,
+            body: data,
+            json: true,
             timeout: this.timeout,
         };
 
         const response = await got(url, options);
-        const body = JSON.parse(response.body);
+        const body = response.body;
 
         if (body.error && body.error.length) {
             const error = body.error.filter(e => e.startsWith('E')).map(e => e.substr(1));
