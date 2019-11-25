@@ -36,9 +36,8 @@
   "dependencies": {
     "@types/ws": "^6.0.3",
     "got": "^9.6.0",
-    "isomorphic-ws": "^4.0.1",
-    "qs": "^6.9.1",
-    "ws": "^7.2.0"
+    "nativescript-websockets": "^1.5.5",
+    "qs": "^6.9.1"
   },
   "devDependencies": {
     "prettier": "^1.19.1",

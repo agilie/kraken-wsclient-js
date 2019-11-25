@@ -1,9 +1,8 @@
-import { CloseEvent, ErrorEvent, MessageEvent } from 'ws';
-import WebSocket from 'isomorphic-ws';
 import { SubscribeForPriceEvent } from '../types/SubscribeForPriceEvent';
 import { SupPairs } from '../types/SupPairs';
 
 export default class KrakenWs {
+    ws: any;
     private KRAKEN_SOCKET_URL = 'wss://ws.kraken.com';
 
     private readonly _socket!: WebSocket;
@@ -16,7 +15,7 @@ export default class KrakenWs {
 
     constructor(...pairs: SupPairs[]) {
         this._expectedPairs = pairs;
-        this._socket = new WebSocket(this.KRAKEN_SOCKET_URL);
+        this._socket = new this.ws(this.KRAKEN_SOCKET_URL);
     }
 
     fetch(): Promise<any> {
