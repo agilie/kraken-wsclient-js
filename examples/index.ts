@@ -8,7 +8,7 @@ KrakenWs.prototype.ws = WS;
 console.log(KrakenWs.prototype);
 
 getPrices(SupPairs.ETH_USD, SupPairs.LTC_USD).then(data => {
-    console.log('[data]', data);
+    console.log('[sdata]', data);
 });
 
 getTicker({ pair: 'XXBTZUSD' }).then(data => {

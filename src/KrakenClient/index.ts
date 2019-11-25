@@ -1,11 +1,10 @@
-import got, { GotJSONOptions } from 'got';
+import request from 'request';
 
 import { Public, Private } from '../types/Methods';
 
 export default class KrakenClient {
     private readonly url = 'https://api.kraken.com';
     private readonly version = 0;
-    private readonly timeout = 500;
 
     public api(method: Public | Private, params: object = {}): Promise<any> {
         if (Object.values(Public).includes(Public[method])) {
@@ -27,30 +26,33 @@ export default class KrakenClient {
         return Promise.reject();
     }
 
-    private async request(url: string, headers: object, data: object): Promise<any> {
+    private request(url: string, headers: object, data: object): Promise<any> {
         // Set custom User-Agent string
         headers['User-Agent'] = 'Kraken Javascript API Client';
 
-        const options: GotJSONOptions = {
+        const options = {
             method: 'POST',
-            body: data,
+            uri: url,
             json: true,
-            timeout: this.timeout,
+            body: data,
+            headers,
         };
 
-        const response = await got(url, options);
-        const body = response.body;
+        return new Promise((resolve, reject) => {
+            request(options, (err, httpResponse) => {
+                const body = httpResponse.body;
+                if (body.error && body.error.length) {
+                    const error = body.error.filter(e => e.startsWith('E')).map(e => e.substr(1));
 
-        if (body.error && body.error.length) {
-            const error = body.error.filter(e => e.startsWith('E')).map(e => e.substr(1));
+                    if (!error.length) {
+                        throw new Error('Kraken API returned an unknown error');
+                    }
 
-            if (!error.length) {
-                throw new Error('Kraken API returned an unknown error');
-            }
+                    reject(error.join(', '));
+                }
 
-            throw new Error(error.join(', '));
-        }
-
-        return body;
+                resolve(body.result);
+            });
+        });
     }
 }

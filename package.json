@@ -34,13 +34,10 @@
   ],
   "main": "./dist/index.js",
   "dependencies": {
-    "fs": "0.0.1-security",
-    "got": "^9.6.0",
-    "net": "^1.0.2",
-    "tls": "0.0.1"
+    "request": "^2.88.0"
   },
   "devDependencies": {
-    "@types/got": "^9.6.9",
+    "@types/request": "^2.48.3",
     "prettier": "^1.19.1",
     "tslint": "^5.20.1",
     "tslint-config-prettier": "^1.18.0",
