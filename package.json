@@ -35,9 +35,12 @@
   "main": "./dist/index.js",
   "dependencies": {
     "@types/ws": "^6.0.3",
+    "fs": "0.0.1-security",
     "got": "^9.6.0",
     "nativescript-websockets": "^1.5.5",
-    "qs": "^6.9.1"
+    "net": "^1.0.2",
+    "qs": "^6.9.1",
+    "tls": "0.0.1"
   },
   "devDependencies": {
     "prettier": "^1.19.1",
