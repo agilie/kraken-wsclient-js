@@ -6,6 +6,6 @@ API wrapper for the Kraken [websocket API](https://docs.kraken.com/websockets/).
 
 ```
 import {  KrakenWs } from 'kraken-wsclient';
-const WS = require('ws');
-KrakenWs.prototype.ws = WS;
+require('nativescript-websockets');
+KrakenWs.prototype.ws = WebSocket;
 ```
