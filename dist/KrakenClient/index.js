@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var request_1 = __importDefault(require("request"));
+var axios_1 = __importDefault(require("axios"));
 var Methods_1 = require("../types/Methods");
 var KrakenClient = /** @class */ (function () {
     function KrakenClient() {
@@ -35,23 +35,21 @@ var KrakenClient = /** @class */ (function () {
         headers['User-Agent'] = 'Kraken Javascript API Client';
         var options = {
             method: 'POST',
-            uri: url,
-            json: true,
-            body: data,
             headers: headers,
+            data: data,
+            responseType: 'json',
+            url: url,
         };
-        return new Promise(function (resolve, reject) {
-            request_1.default(options, function (err, httpResponse) {
-                var body = httpResponse.body;
-                if (body.error && body.error.length) {
-                    var error = body.error.filter(function (e) { return e.startsWith('E'); }).map(function (e) { return e.substr(1); });
-                    if (!error.length) {
-                        throw new Error('Kraken API returned an unknown error');
-                    }
-                    reject(error.join(', '));
+        return axios_1.default(options).then(function (_a) {
+            var data = _a.data;
+            if (data.error && data.error.length) {
+                var error = data.error.filter(function (e) { return e.startsWith('E'); }).map(function (e) { return e.substr(1); });
+                if (!error.length) {
+                    throw new Error('Kraken API returned an unknown error');
                 }
-                resolve(body.result);
-            });
+                throw new Error(error.join(', '));
+            }
+            return data.result;
         });
     };
     return KrakenClient;

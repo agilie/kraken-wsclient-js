@@ -1,4 +1,5 @@
 import request from 'request';
+import axios, { AxiosRequestConfig } from 'axios';
 
 import { Public, Private } from '../types/Methods';
 
@@ -30,29 +31,24 @@ export default class KrakenClient {
         // Set custom User-Agent string
         headers['User-Agent'] = 'Kraken Javascript API Client';
 
-        const options = {
+        const options: AxiosRequestConfig = {
             method: 'POST',
-            uri: url,
-            json: true,
-            body: data,
             headers,
+            data: data,
+            responseType: 'json',
+            url,
         };
 
-        return new Promise((resolve, reject) => {
-            request(options, (err, httpResponse) => {
-                const body = httpResponse.body;
-                if (body.error && body.error.length) {
-                    const error = body.error.filter(e => e.startsWith('E')).map(e => e.substr(1));
+        return axios(options).then(({ data }) => {
+            if (data.error && data.error.length) {
+                const error = data.error.filter(e => e.startsWith('E')).map(e => e.substr(1));
 
-                    if (!error.length) {
-                        throw new Error('Kraken API returned an unknown error');
-                    }
-
-                    reject(error.join(', '));
+                if (!error.length) {
+                    throw new Error('Kraken API returned an unknown error');
                 }
-
-                resolve(body.result);
-            });
+                throw new Error(error.join(', '));
+            }
+            return data.result;
         });
     }
 }
