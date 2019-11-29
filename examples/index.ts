@@ -1,7 +1,6 @@
-import { getTicker, getPrices, SupPairs, KrakenWs } from '../src/';
+import { getSpread, getPrices, SupPairs, KrakenWs } from '../src/';
 
 const WS = require('ws');
-//const WS = require('nativescript-websockets');
 
 KrakenWs.prototype.ws = WS;
 
@@ -11,6 +10,6 @@ getPrices(SupPairs.ETH_USD, SupPairs.LTC_USD).then(data => {
     console.log('[sdata]', data);
 });
 
-getTicker({ pair: 'XXBTZUSD' }).then(data => {
+getSpread({ pair: 'XXBTZUSD' }).then(data => {
     console.log('[data]', data);
 });

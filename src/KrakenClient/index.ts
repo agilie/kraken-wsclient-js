@@ -1,54 +1,47 @@
-import request from 'request';
-import axios, { AxiosRequestConfig } from 'axios';
+import KrakenClient from './KrakenClient';
+import { Public } from './types/Methods';
 
-import { Public, Private } from '../types/Methods';
+import {
+    ParamsAssets,
+    ParamsAssetPairs,
+    ParamsTicker,
+    ParamsOHLC,
+    ParamsOrderBook,
+    ParamsTrades,
+    ParamsSpread,
+} from './types/PublicParams';
+import { DataTime, DataAsset, DataPair, DataTicker, DataOHLC, DataOrderBook, DataTrades, DataSpread } from './types/PublicData';
 
-export default class KrakenClient {
-    private readonly url = 'https://api.kraken.com';
-    private readonly version = 0;
+const client = new KrakenClient();
 
-    public api(method: Public | Private, params: object = {}): Promise<any> {
-        if (Object.values(Public).includes(Public[method])) {
-            return this.publicMethod(method as Public, params);
-        } else if (Object.values(Private).includes(Private[method])) {
-            return this.privateMethod(method as Private);
-        } else {
-            throw new Error(method + ' is not a valid API method.');
-        }
-    }
+export function getTime(): Promise<DataTime> {
+    return client.api(Public.Time);
+}
 
-    private publicMethod(method: Public, params: object): Promise<any> {
-        const url = `${this.url}/${this.version}/public/${method}`;
-        return this.request(url, {}, params);
-    }
+export function getAssets(params?: ParamsAssets): Promise<DataAsset[]> {
+    return client.api(Public.Assets, params);
+}
 
-    private privateMethod(method: Private): Promise<any> {
-        // TODO
-        return Promise.reject();
-    }
+export function getAssetPairs(params?: ParamsAssetPairs): Promise<DataPair[]> {
+    return client.api(Public.AssetPairs, params);
+}
 
-    private request(url: string, headers: object, data: object): Promise<any> {
-        // Set custom User-Agent string
-        headers['User-Agent'] = 'Kraken Javascript API Client';
+export function getTicker(params: ParamsTicker): Promise<DataTicker> {
+    return client.api(Public.Ticker, params);
+}
 
-        const options: AxiosRequestConfig = {
-            method: 'POST',
-            headers,
-            data: data,
-            responseType: 'json',
-            url,
-        };
+export function getOHLC(params: ParamsOHLC): Promise<DataOHLC> {
+    return client.api(Public.OHLC, params);
+}
 
-        return axios(options).then(({ data }) => {
-            if (data.error && data.error.length) {
-                const error = data.error.filter(e => e.startsWith('E')).map(e => e.substr(1));
+export function getOrderBook(params: ParamsOrderBook): Promise<DataOrderBook> {
+    return client.api(Public.Depth, params);
+}
 
-                if (!error.length) {
-                    throw new Error('Kraken API returned an unknown error');
-                }
-                throw new Error(error.join(', '));
-            }
-            return data.result;
-        });
-    }
+export function getTrades(params: ParamsTrades): Promise<DataTrades> {
+    return client.api(Public.Trades, params);
+}
+
+export function getSpread(params: ParamsSpread): Promise<DataSpread> {
+    return client.api(Public.Spread, params);
 }
