@@ -2,7 +2,7 @@
 
 API wrapper for the Kraken [websocket API](https://docs.kraken.com/websockets/).
 
-# Include WebSocket fot your platform
+# Include WebSocket for your platform
 
 ```
 import {  KrakenWs } from 'kraken-wsclient';
