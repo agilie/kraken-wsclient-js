@@ -1,5 +1,6 @@
 import { SubscribeForPriceEvent } from './types/SubscribeForPriceEvent';
 import { SupPairs } from './types/SupPairs';
+import { DataTrades, DataSpread } from './types/PublicData';
 
 export default class KrakenWs {
     ws: any;
@@ -7,14 +8,16 @@ export default class KrakenWs {
 
     private readonly _socket!: WebSocket;
     private readonly _expectedPairs!: SupPairs[];
+    private readonly _method!: string;
 
     private _promiseResolve?;
     private _promiseReject?;
 
     private _getPrices: { [key in SupPairs]?: string } = {};
 
-    constructor(pairs: SupPairs[]) {
+    constructor(pairs: SupPairs[], method: string) {
         this._expectedPairs = pairs;
+        this._method = method;
         this._socket = new this.ws(this.KRAKEN_SOCKET_URL);
     }
 
@@ -45,7 +48,7 @@ export default class KrakenWs {
             event: 'subscribe',
             pair: this._expectedPairs,
             subscription: {
-                name: 'spread',
+                name: this._method,
             },
         };
 
@@ -54,20 +57,17 @@ export default class KrakenWs {
 
     private _handleMessage(event: MessageEvent): void {
         const payload = JSON.parse(event.data as string);
+        console.log(payload);
         try {
-            if (Array.isArray(payload)) {
-                if (this._isPriceValid(payload)) {
-                    const [channelID, [price, ...otherPrices], channelName, pair] = payload;
-
-                    if (!this._expectedPairs.includes(pair)) {
-                        return; // no reason to handle something we didn't expect
-                    }
-
-                    this._getPrices[pair] = price;
-
-                    if (this._expectedPairs.length === Object.keys(this._getPrices).length) {
-                        this._closeChannel(); // after we receive all prices => unsubscribe
-                    }
+            if (this._isPriceValid(payload)) {
+                console.log('valid')
+                switch (this._method) {
+                    case 'spread':
+                        this.getSpread( payload );
+                        break;
+                    case 'trade':
+                        this.getTrade( payload );
+                        break;
                 }
             }
         } catch (e) {
@@ -75,6 +75,24 @@ export default class KrakenWs {
             console.error('Received data seems to be incorrect');
             console.error(event.data, e);
             console.log('***** err *****');
+        }
+    }
+
+    private getTrade( data: DataTrades ): void {
+        // TODO
+        // this method should work
+    }
+    private getSpread( data: DataSpread ): void {
+        const [channelID, [price, ...otherPrices], channelName, pair] = data;
+
+        if (!this._expectedPairs.includes(pair)) {
+            return; // no reason to handle something we didn't expect
+        }
+
+        this._getPrices[pair] = price;
+
+        if (this._expectedPairs.length === Object.keys(this._getPrices).length) {
+            this._closeChannel(); // after we receive all prices => unsubscribe
         }
     }
 
@@ -94,8 +112,30 @@ export default class KrakenWs {
     }
 
     private _isPriceValid(data: any): boolean {
-        const [channelID, [price, ...otherPrices], channelName, pair] = data;
+        const [channelID, dataArray, channelName, pair] = data;
 
-        return data[1] && price && !Number.isNaN(price) && price > 0;
+        if (
+            channelName !== this._method ||
+            !Array.isArray(dataArray) ||
+            !Object.values(SupPairs).includes( pair )
+        ) {
+            return false;
+        }
+
+        if (channelName === 'spread') {
+            const [bidPrice, ...otherPrices] = dataArray;
+            return data[1] && bidPrice && !Number.isNaN(bidPrice) && bidPrice > 0;
+        }
+        if (channelName === 'trade') {
+            dataArray.some((item: any[]) => {
+                if ( Array.isArray(item) ) {
+                    console.log( 'is_trade_array', item )
+                    const [price, ...otherPrices] = item;
+                    return data[1] && price && !Number.isNaN( price ) && price > 0;
+                }
+                return false;
+            });
+        }
+
     }
 }

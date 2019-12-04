@@ -3,6 +3,7 @@ import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { Public, Private } from './types/Methods';
 
 export default class KrakenClient {
+    proxyUrl: string;
     private readonly url = 'https://api.kraken.com';
     private readonly version = 0;
 
@@ -16,8 +17,12 @@ export default class KrakenClient {
         }
     }
 
+    public setProxyUrl( url: string ): void {
+        this.proxyUrl = url + '/';
+    }
+
     private publicMethod <T>(method: Public, params: object): Promise<T> {
-        const url = `${this.url}/${this.version}/public/${method}`;
+        const url = `${this.proxyUrl || ''}${this.url}/${this.version}/public/${method}`;
         return this.request(url, {}, params);
     }
 
@@ -30,14 +35,14 @@ export default class KrakenClient {
     }
 
     private request <T>(url: string, headers: object, data: object): Promise<T> {
-        // Set custom User-Agent string
-        headers['User-Agent'] = 'Kraken Javascript API Client';
-
         const options: AxiosRequestConfig = {
             method: 'POST',
             responseType: 'json',
-            headers,
-            data,
+            headers: {
+                'Origin': this.url + '/',
+                ...headers,
+            },
+            params: data,
             url,
         };
 
@@ -51,6 +56,8 @@ export default class KrakenClient {
                 throw new Error(error.join(', '));
             }
             return response.data.result;
+        }).catch(( err: any ) => {
+            console.error(err);
         });
     }
 }

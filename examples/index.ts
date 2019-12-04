@@ -1,15 +1,16 @@
-import { getSpread, getPrices, SupPairs, KrakenWs } from '../src/';
+import { getTrades, getPrices, getTradesWs, SupPairs, setWS, setProxyUrl } from '../src/';
 
 const WS = require('ws');
 
-KrakenWs.prototype.ws = WS;
-
-console.log(KrakenWs.prototype);
+// Include WebSocket for your platform
+setWS( WS );
+// Include Proxy URL for client
+setProxyUrl('https://cors-anywhere.herokuapp.com');
 
 getPrices(SupPairs.ETH_USD, SupPairs.LTC_USD).then(data => {
     console.log('[sdata]', data);
 });
 
-getSpread({ pair: 'XXBTZUSD' }).then(data => {
+getTrades({ pair: 'XXBTZUSD' }).then(data => {
     console.log('[data]', data);
 });

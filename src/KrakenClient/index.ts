@@ -14,6 +14,10 @@ import { DataTime, DataAsset, DataPair, DataTicker, DataOHLC, DataOrderBook, Dat
 
 const client = new KrakenClient();
 
+export function setProxyUrl( url: string): void {
+    client.setProxyUrl( url );
+}
+
 export function getTime(): Promise<DataTime> {
     return client.api(Public.Time);
 }
